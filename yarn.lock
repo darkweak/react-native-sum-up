@@ -2329,16 +2329,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wavyapp/react-native-sum-up@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@wavyapp/react-native-sum-up@workspace:."
-  dependencies:
-    react-native: "npm:^0.73.4"
-    react-native-builder-bob: "npm:^0.23.2"
-    typescript: "npm:^5.3.3"
-  languageName: unknown
-  linkType: soft
-
 "abbrev@npm:^2.0.0":
   version: 2.0.0
   resolution: "abbrev@npm:2.0.0"
@@ -5631,6 +5621,16 @@ __metadata:
   checksum: 10c0/b5e8943ce011e43dbd75c04a96a27464ad7820aaed0b35a50cabbefeb5292de0cdea8b505364bddda045a5cf0e9d72c1bf7ac0cea9c0c6e33b574b8d64c65817
   languageName: node
   linkType: hard
+
+"react-native-sum-up@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "react-native-sum-up@workspace:."
+  dependencies:
+    react-native: "npm:^0.73.4"
+    react-native-builder-bob: "npm:^0.23.2"
+    typescript: "npm:^5.3.3"
+  languageName: unknown
+  linkType: soft
 
 "react-native@npm:^0.73.4":
   version: 0.73.4
