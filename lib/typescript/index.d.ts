@@ -51,6 +51,7 @@ export declare enum PaymentOptions {
     MOBILE
 }
 export declare function authenticate(affiliateKey: string): Promise<AuthenticationResult>;
+export declare function authenticateWithAccessToken(accessToken: string): Promise<Boolean>;
 export declare function logout(): Promise<AsyncActionResult>;
 export declare function prepareForCheckout(): Promise<AsyncActionResult>;
 export declare function checkout(request: Record<string, string>): Promise<CheckoutResult>;

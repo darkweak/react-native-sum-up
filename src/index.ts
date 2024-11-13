@@ -1,20 +1,20 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules, Platform } from "react-native";
 
 const LINKING_ERROR =
   `The package 'react-native-sum-up' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n';
+  Platform.select({ ios: "- You have run 'pod install'\n", default: "" }) +
+  "- You rebuilt the app after installing the package\n";
 
 const SumUp = NativeModules.ReactNativeSumUp
   ? NativeModules.ReactNativeSumUp
   : new Proxy(
-    {},
-    {
-      get() {
-        throw new Error(LINKING_ERROR);
-      },
-    }
-  );
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR);
+        },
+      }
+    );
 
 type AsyncActionResult = {
   success: boolean;
@@ -22,7 +22,7 @@ type AsyncActionResult = {
 
 export type AuthenticationResult = AsyncActionResult & {
   userAdditionalInfo: {
-    currencyCode: CurrencyCode,
+    currencyCode: CurrencyCode;
     merchantCode: string;
   };
 };
@@ -74,8 +74,16 @@ export enum PaymentOptions {
   MOBILE = SumUp.SMPPaymentOptionMobilePayment,
 }
 
-export async function authenticate(affiliateKey: string): Promise<AuthenticationResult> {
+export async function authenticate(
+  affiliateKey: string
+): Promise<AuthenticationResult> {
   return SumUp.authenticate(affiliateKey);
+}
+
+export async function authenticateWithAccessToken(
+  accessToken: string
+): Promise<Boolean> {
+  return SumUp.authenticateWithAccessToken(accessToken);
 }
 
 export async function logout(): Promise<AsyncActionResult> {
@@ -86,7 +94,9 @@ export async function prepareForCheckout(): Promise<AsyncActionResult> {
   return SumUp.prepareForCheckout();
 }
 
-export async function checkout(request: Record<string, string>): Promise<CheckoutResult> {
+export async function checkout(
+  request: Record<string, string>
+): Promise<CheckoutResult> {
   return SumUp.checkout(request);
 }
 

@@ -42,4 +42,10 @@ RCT_EXTERN_METHOD(
                   rejecter: (RCTPromiseRejectBlock) rejecter
                   )
 
+RCT_EXTERN_METHOD(
+                  authenticateWithAccessToken: (NSString) accessToken
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) rejecter
+                  )
+
 @end
