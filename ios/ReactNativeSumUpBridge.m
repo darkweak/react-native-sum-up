@@ -7,6 +7,9 @@
 
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
+#import <React/RCTViewManager.h>
+#import <React/RCTConvert.h>
+#import <Foundation/Foundation.h>
 
 @interface RCT_EXTERN_MODULE(ReactNativeSumUp, RCTEventEmitter)
 
@@ -17,6 +20,12 @@ RCT_EXTERN_METHOD(
 
 RCT_EXTERN_METHOD(
                   authenticate: (NSString) affiliateKey
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) rejecter
+                  )
+
+RCT_EXTERN_METHOD(
+                  authenticateWithAccessToken: (NSString) accessToken
                   resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) rejecter
                   )
@@ -39,12 +48,6 @@ RCT_EXTERN_METHOD(
 
 RCT_EXTERN_METHOD(
                   logout: (RCTPromiseResolveBlock) resolve
-                  rejecter: (RCTPromiseRejectBlock) rejecter
-                  )
-
-RCT_EXTERN_METHOD(
-                  authenticateWithAccessToken: (NSString) accessToken
-                  resolver: (RCTPromiseResolveBlock) resolve
                   rejecter: (RCTPromiseRejectBlock) rejecter
                   )
 

@@ -175,13 +175,13 @@ class ReactNativeSumUp: NSObject {
   @objc
   func authenticateWithAccessToken(
     _ accessToken: String,
-    _ resolve: @escaping RCTPromiseResolveBlock,
-    rejecter reject: @escaping RCTPromiseRejectBlock
+    resolver resolve: RCTPromiseResolveBlock,
+    rejecter reject: RCTPromiseRejectBlock
   ) {
-    Task {
-      _ = await self.storeSumUpAccessToken(accessToken)
-      resolve(true)
-    }
+      Task {
+          _ = await self.storeSumUpAccessToken(accessToken)
+          resolve(true)
+      }
   }
 
   @objc
