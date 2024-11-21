@@ -72,6 +72,7 @@ class ReactNativeSumUp: NSObject {
       ]
       let status = SecItemAdd(storeQuery as CFDictionary, nil)
 
+      NSLog("The stored query: %@", storeQuery);
       if (status == errSecDuplicateItem) {
         let updateStatus = SecItemUpdate([
           kSecClass as String: kSecClassGenericPassword,
@@ -175,12 +176,21 @@ class ReactNativeSumUp: NSObject {
   @objc
   func authenticateWithAccessToken(
     _ accessToken: String,
-    resolver resolve: RCTPromiseResolveBlock,
+    resolver resolve: @escaping RCTPromiseResolveBlock,
     rejecter reject: RCTPromiseRejectBlock
   ) {
+      NSLog("Trying to store the access token: %@", accessToken);
       Task {
-          _ = await self.storeSumUpAccessToken(accessToken)
-          resolve(true)
+          do {
+              let storingResult = await self.storeSumUpAccessToken(accessToken)
+              NSLog("storingResult: \(storingResult)")
+              NSLog("Debugging before")
+              let mydebug = try await SumUpSDK.login(withToken: accessToken)
+              NSLog("Debugging: \(mydebug)")
+              resolve(true)
+          } catch {
+              NSLog("Debugging: \(error.localizedDescription): \(error)")
+          }
       }
   }
 
