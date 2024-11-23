@@ -51,4 +51,10 @@ RCT_EXTERN_METHOD(
                   rejecter: (RCTPromiseRejectBlock) rejecter
                   )
 
+RCT_EXTERN_METHOD(
+                  setup: (NSString) affiliateKey
+                  resolver: (RCTPromiseResolveBlock) resolve
+                  rejecter: (RCTPromiseRejectBlock) rejecter
+                  )
+
 @end

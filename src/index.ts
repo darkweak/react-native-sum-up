@@ -107,3 +107,7 @@ export async function preferences(): Promise<AsyncActionResult> {
 export async function isLoggedIn(): Promise<Boolean> {
   return SumUp.isLoggedIn();
 }
+
+export async function setup(affiliateKey: string): Promise<Boolean> {
+  return SumUp.setup(affiliateKey);
+}

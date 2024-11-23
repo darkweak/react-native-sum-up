@@ -72,7 +72,6 @@ class ReactNativeSumUp: NSObject {
       ]
       let status = SecItemAdd(storeQuery as CFDictionary, nil)
 
-      NSLog("The stored query: %@", storeQuery);
       if (status == errSecDuplicateItem) {
         let updateStatus = SecItemUpdate([
           kSecClass as String: kSecClassGenericPassword,
@@ -152,6 +151,7 @@ class ReactNativeSumUp: NSObject {
           self.resolveWithMechantDetails(currentMerchant, resolve)
         } else {
           if let accessToken = await self.retrieveSumUpAccessToken() {
+              NSLog("Debugging: \(accessToken)")
             SumUpSDK.login(withToken: accessToken) { (success: Bool, error: Error?) in
               if let currentMerchant = SumUpSDK.currentMerchant, success {
                 self.resolveWithMechantDetails(currentMerchant, resolve)
@@ -177,20 +177,39 @@ class ReactNativeSumUp: NSObject {
   func authenticateWithAccessToken(
     _ accessToken: String,
     resolver resolve: @escaping RCTPromiseResolveBlock,
-    rejecter reject: RCTPromiseRejectBlock
+    rejecter reject: @escaping RCTPromiseRejectBlock
   ) {
-      NSLog("Trying to store the access token: %@", accessToken);
       Task {
           do {
-              let storingResult = await self.storeSumUpAccessToken(accessToken)
-              NSLog("storingResult: \(storingResult)")
-              NSLog("Debugging before")
-              let mydebug = try await SumUpSDK.login(withToken: accessToken)
-              NSLog("Debugging: \(mydebug)")
-              resolve(true)
-          } catch {
-              NSLog("Debugging: \(error.localizedDescription): \(error)")
+            let storedAccessToken = await storeSumUpAccessToken(accessToken)
+            // NSLog("Debugging storedAccessToken: \(storedAccessToken)")
+            // let storedToken = await self.retrieveSumUpAccessToken()
+            // NSLog("Debugging storedToken: \(storedToken)")
+            let mydebug = try await SumUpSDK.login(withToken: accessToken)
+            // NSLog("Debugging: \(mydebug)")
+            resolve(true)
+          } catch(let error) {
+            reject("Failed to log out", error.localizedDescription, error)
+            resolve(false)
           }
+      }
+  }
+
+  @objc
+  func setup(
+    _ affiliateKey: String,
+    resolver resolve: @escaping RCTPromiseResolveBlock,
+    rejecter reject: @escaping RCTPromiseRejectBlock
+  ) {
+      DispatchQueue.main.async {
+          if (!self.isSDKSetup) {
+              if (!SumUpSDK.setup(withAPIKey: affiliateKey)) {
+                  reject("Login failure", "Can't setup SumUp SDK", nil)
+                  return
+              }
+          }
+          self.isSDKSetup = true
+          resolve(true)
       }
   }
 
@@ -275,7 +294,7 @@ class ReactNativeSumUp: NSObject {
             let jsonAdditionalInfo = try jsonEncoder.encode([
               "status": additionalInfo["status"] as! String,
               "transactionCode": additionalInfo["transaction_code"] as! String,
-              "entryMode": additionalInfo["entry_mode"] as! String,
+              // "entryMode": additionalInfo["entry_mode"] as! String,
             ])
             reject("Checkout failure", String(data: jsonAdditionalInfo, encoding: .utf8), nil)
           } catch {
